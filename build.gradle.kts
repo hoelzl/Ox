@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -42,6 +43,12 @@ dependencies {
 tasks {
     test {
         useJUnitPlatform()
+        testLogging {
+            events("PASSED", "FAILED", "SKIPPED")
+            showExceptions = true
+            showStackTraces = true
+            exceptionFormat = TestExceptionFormat.FULL
+        }
     }
 }
 

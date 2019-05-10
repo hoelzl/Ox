@@ -1,9 +1,10 @@
 package ox
 
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertTrue
 
 class DictionaryTest {
     @Test
@@ -18,9 +19,8 @@ class DictionaryTest {
 
         val randomWord = dictionary.getRandomWord(3, 5)
 
-        assertThat(randomWord, `in`(dictionary.words))
-        assertThat(randomWord.length, greaterThanOrEqualTo(3))
-        assertThat(randomWord.length, lessThanOrEqualTo(5))
+        assertTrue(randomWord in dictionary.words)
+        assertTrue(randomWord.length in 3..5)
     }
 
     @Test
@@ -33,7 +33,7 @@ class DictionaryTest {
     fun getRandomWord_GivenLength4_WhenMultipleWordsAreAvailable() {
         val dictionary = Dictionary(listOf("song", "bar", "word", "game", "generally"))
         val randomWord = dictionary.getRandomWord(4)
-        assertThat(randomWord, `in`(dictionary.words))
+        assertTrue(randomWord in dictionary.words)
         assertThat(randomWord.length, equalTo(4))
     }
 
