@@ -8,7 +8,7 @@ To build the tests enter
 ./gradlew check
 ```
 
-from a terminal/shell prompt (or.\gradlew.bat check` if you're on Windows).
+from a terminal/shell prompt (or `.\gradlew.bat check` if you're on Windows).
 
 To run the GUI application enter
 
