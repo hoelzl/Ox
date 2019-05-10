@@ -13,15 +13,20 @@ class DictionaryTest {
     }
 
     @Test
-    fun getRandomWord_GivenLength5() {
-        val dictionary = Dictionary(listOf("bar", "word", "games"))
-        assertThat(dictionary.getRandomWord(5), equalTo("games"))
+    fun getRandomWord_GivenLengthBetween3And5() {
+        val dictionary = Dictionary(listOf("a", "be", "bar", "word", "games", "kotlin"))
+
+        val randomWord = dictionary.getRandomWord(3, 5)
+
+        assertThat(randomWord, `in`(dictionary.words))
+        assertThat(randomWord.length, greaterThanOrEqualTo(3))
+        assertThat(randomWord.length, lessThanOrEqualTo(5))
     }
 
     @Test
     fun getRandomWord_WhenDictionaryIsEmpty() {
         val dictionary = Dictionary()
-        assertThrows<NoSuchElementException> {dictionary.getRandomWord(2)}
+        assertThrows<NoSuchElementException> { dictionary.getRandomWord(2) }
     }
 
     @Test

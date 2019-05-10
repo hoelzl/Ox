@@ -35,8 +35,7 @@ class OxApp : Application() {
     private fun buttonClick() {
         if (button.text == oxText) {
             button.text = "You clicked me!"
-        }
-        else {
+        } else {
             button.text = oxText
         }
     }
