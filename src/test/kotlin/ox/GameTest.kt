@@ -3,13 +3,22 @@ package ox
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class GameTest {
     private val defaultDictionary = Dictionary(setOf("foo", "quux", "foobar"))
+    private val singleSolutionDictionary = Dictionary(setOf("solution"))
+
+    private val singleSolutionGame: Game
+        get() {
+            val game = Game(singleSolutionDictionary, maxLength = 10)
+            assert(game.wordToGuess == "solution")
+            return game
+        }
 
     @Test
-    fun newGame_WhenCalledWithDefaultArgs_HasCorrectWordToGuessAndHintValues() {
+    fun constructor_GivenDefaultArgs_HasCorrectValuesForAttributes() {
         val game = Game(defaultDictionary)
 
         assertTrue(game.wordToGuess in game.words)
@@ -18,11 +27,35 @@ class GameTest {
     }
 
     @Test
-    fun newGame_GeneratesAllPossibleWordsInDictionary() {
+    fun constructor_WhenCalledOftenEnough_GeneratesAllPossibleWordsInDictionary() {
         val wordsNotYetGenerated = tryToGenerateAllWordsToGuess(defaultDictionary)
 
         assertTrue(wordsNotYetGenerated.isEmpty(),
                    "Not all words were generated. Missing: $wordsNotYetGenerated")
+    }
+
+    @Test
+    fun computeMatchFor_GivenWordThatDoesNotMatch() {
+        val match = singleSolutionGame.computeMatchFor("backward")
+
+        assertFalse(match.isPerfectMatch())
+        assertFalse(match.isPartialMatch())
+    }
+
+    @Test
+    fun computeMatchFor_GivenWordThatMatchesPartially() {
+        val match = singleSolutionGame.computeMatchFor("crossbow")
+
+        assertFalse(match.isPerfectMatch())
+        assertTrue(match.isPartialMatch())
+    }
+
+    @Test
+    fun computeMatchFor_GivenWordThatMatchesPerfectly() {
+        val match = singleSolutionGame.computeMatchFor("solution")
+
+        assertTrue(match.isPerfectMatch())
+        assertTrue(match.isPartialMatch())
     }
 
     private fun tryToGenerateAllWordsToGuess(dictionary: Dictionary): HashSet<String> {

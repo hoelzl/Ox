@@ -11,6 +11,10 @@ class Game(val dictionary: Dictionary, val minLength: Int = 3, val maxLength: In
         wordToGuess = dictionary.getRandomWord(minLength, maxLength)
     }
 
+    fun computeMatchFor(proposedSolution: String): Match {
+        return Match(wordToGuess, proposedSolution)
+    }
+
     val words: Collection<String>
         get() {
             return dictionary.words
