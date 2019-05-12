@@ -19,18 +19,26 @@ class GameTest {
 
     @Test
     fun newGame_GeneratesAllPossibleWordsInDictionary() {
-        val wordsNotYetGenerated = tryToGenerateAllWordsToGuess()
+        val wordsNotYetGenerated = tryToGenerateAllWordsToGuess(defaultDictionary)
 
         assertTrue(wordsNotYetGenerated.isEmpty(),
-                "Not all words were generated. Missing: $wordsNotYetGenerated")
+                   "Not all words were generated. Missing: $wordsNotYetGenerated")
     }
 
-    private fun tryToGenerateAllWordsToGuess(): HashSet<String> {
-        val wordsNotYetGenerated = HashSet<String>(defaultDictionary.words)
+    private fun tryToGenerateAllWordsToGuess(dictionary: Dictionary): HashSet<String> {
+        val wordsNotYetGenerated = HashSet<String>(dictionary.words)
+        // How many wordToGuess candidates do we generate before we give up?
+        // Formally this is known as the coupon collector problem, but since the solution is not
+        // trivial to compute we just stick with a number that is way higher than the iterations
+        // we expect to need.
         var remainingIterations = 1000
 
+        val wordLengths = dictionary.words.map { it.length }
+        val minLength = wordLengths.min() ?: -1
+        val maxLength = wordLengths.max() ?: -1
+
         do {
-            wordsNotYetGenerated -= Game(defaultDictionary, 3, 6).wordToGuess
+            wordsNotYetGenerated -= Game(dictionary, minLength, maxLength).wordToGuess
             remainingIterations--
         } while (wordsNotYetGenerated.isNotEmpty() && remainingIterations > 0)
 
