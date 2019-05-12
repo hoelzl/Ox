@@ -3,19 +3,20 @@ package ox
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class GameTest {
     private val defaultDictionary = Dictionary(setOf("foo", "quux", "foobar"))
     private val singleSolutionDictionary = Dictionary(setOf("solution"))
 
-    private val singleSolutionGame: Game
-        get() {
-            val game = Game(singleSolutionDictionary, maxLength = 10)
-            assert(game.wordToGuess == "solution")
-            return game
-        }
+    private fun createSingleSolutionGame(): Game {
+        val game = Game(singleSolutionDictionary, maxLength = 10)
+        assert(game.wordToGuess == "solution")
+        return game
+    }
 
     @Test
     fun constructor_GivenDefaultArgs_HasCorrectValuesForAttributes() {
@@ -36,7 +37,7 @@ class GameTest {
 
     @Test
     fun computeMatchFor_GivenWordThatDoesNotMatch() {
-        val match = singleSolutionGame.computeMatchFor("backward")
+        val match = createSingleSolutionGame().computeMatchFor("backward")
 
         assertFalse(match.isPerfectMatch())
         assertFalse(match.isPartialMatch())
@@ -44,7 +45,7 @@ class GameTest {
 
     @Test
     fun computeMatchFor_GivenWordThatMatchesPartially() {
-        val match = singleSolutionGame.computeMatchFor("crossbow")
+        val match = createSingleSolutionGame().computeMatchFor("crossbow")
 
         assertFalse(match.isPerfectMatch())
         assertTrue(match.isPartialMatch())
@@ -52,10 +53,57 @@ class GameTest {
 
     @Test
     fun computeMatchFor_GivenWordThatMatchesPerfectly() {
-        val match = singleSolutionGame.computeMatchFor("solution")
+        val match = createSingleSolutionGame().computeMatchFor("solution")
 
         assertTrue(match.isPerfectMatch())
         assertTrue(match.isPartialMatch())
+    }
+
+    @Test
+    fun proposeSolution_GivenWordThatMatchesPartially() {
+        var wasGameWon = false
+        var wasNewMatchComputed = false
+        var newMatch: Match? = null
+        val game = createSingleSolutionGame()
+        game.onGameWon += {
+            wasGameWon = true
+        }
+        game.onNewMatch += {
+            wasNewMatchComputed = true
+            newMatch = it
+        }
+
+        game.proposeSolution("crossbow")
+
+        assertFalse(wasGameWon)
+        assertTrue(wasNewMatchComputed)
+        assertTrue(newMatch != null)
+        assertEquals(newMatch?.isPartialMatch(), true)
+        assertNotEquals(newMatch?.isPerfectMatch(), true)
+    }
+
+
+    @Test
+    fun proposeSolution_GivenWordThatMatchesPerfectly() {
+        var wasGameWon = false
+        var wasNewMatchComputed = false
+        var newMatch: Match? = null
+        val game = createSingleSolutionGame()
+        game.onGameWon += {
+            wasGameWon = true
+        }
+        game.onNewMatch += {
+            wasNewMatchComputed = true
+            newMatch = it
+        }
+
+        game.proposeSolution("solution")
+
+        assertTrue(wasGameWon)
+        assertTrue(wasNewMatchComputed)
+        assertTrue(newMatch != null)
+        assertEquals(newMatch?.isPartialMatch(), true)
+        assertEquals(newMatch?.isPerfectMatch(), true)
     }
 
     private fun tryToGenerateAllWordsToGuess(dictionary: Dictionary): HashSet<String> {
