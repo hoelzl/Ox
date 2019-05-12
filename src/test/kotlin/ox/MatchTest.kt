@@ -1,5 +1,7 @@
 package ox
 
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -85,4 +87,21 @@ class MatchTest {
         assertTrue(match.isPerfectMatch())
         assertTrue(match.isPartialMatch())
     }
+
+    @Test
+    fun descriptions_GivenWordsThatDoNotMatch() {
+        val match = Match("solution", "backward")
+
+        assertThat(match.proposedWord(), equalTo("backward"))
+        assertThat(match.matchDescription(), equalTo("........"))
+    }
+
+    @Test
+    fun descriptions_GivenWordsThatMatchPartially() {
+        val match = Match("solution", "crossbow")
+
+        assertThat(match.proposedWord(), equalTo("crossbow"))
+        assertThat(match.matchDescription(), equalTo("..---.+."))
+    }
+
 }

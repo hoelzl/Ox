@@ -13,8 +13,8 @@ plugins {
 
 
 val myVersion = "0.1.0-SNAPSHOT"
-val myApplicationName = "OxApp"
-val myMainClassName = "ox.OxApp"
+val myApplicationName = "Ox"
+val myMainClassName = "ox.MainKt"
 val myLauncherName = "ox"
 
 application {
@@ -71,6 +71,10 @@ javafx {
 tasks.withType<DokkaTask> {
     outputFormat = "html"
     outputDirectory = "$buildDir/javadoc"
+}
+
+tasks.withType<JavaExec> {
+    standardInput = System.`in`
 }
 
 jlink {

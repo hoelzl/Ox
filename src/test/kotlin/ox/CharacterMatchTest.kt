@@ -39,16 +39,16 @@ class CharacterMatchTest {
 
     @Test
     fun displayChar_WhenPerfectMatch() {
-        assertThat(PerfectCharacterMatch('a').displayChar, equalTo('a'))
+        assertThat(PerfectCharacterMatch('a').descriptiveChar, equalTo('+'))
     }
 
     @Test
     fun displayChar_WhenPartialMatch() {
-        assertThat(PartialCharacterMatch('a').displayChar, equalTo('+'))
+        assertThat(PartialCharacterMatch('a').descriptiveChar, equalTo('-'))
     }
 
     @Test
     fun displayChar_WhenFailedMatch() {
-        assertThat(FailedCharacterMatch('a').displayChar, equalTo('-'))
+        assertThat(FailedCharacterMatch('a').descriptiveChar, equalTo('.'))
     }
 }

@@ -21,4 +21,12 @@ class Match(wordToGuess: String, proposedSolution: String) {
     fun isPartialMatch(): Boolean {
         return characterMatches.any(CharacterMatch::isPartialMatch)
     }
+
+    fun proposedWord(): String {
+        return characterMatches.map { it.proposedChar }.joinToString(separator = "")
+    }
+
+    fun matchDescription(): String {
+        return characterMatches.map { it.descriptiveChar }.joinToString(separator = "")
+    }
 }
