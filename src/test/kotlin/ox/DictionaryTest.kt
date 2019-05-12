@@ -9,13 +9,13 @@ import kotlin.test.assertTrue
 class DictionaryTest {
     @Test
     fun getRandomWord_GivenLength4() {
-        val dictionary = Dictionary(listOf("bar", "word", "games"))
+        val dictionary = Dictionary(setOf("bar", "word", "games"))
         assertThat(dictionary.getRandomWord(4), equalTo("word"))
     }
 
     @Test
     fun getRandomWord_GivenLengthBetween3And5() {
-        val dictionary = Dictionary(listOf("a", "be", "bar", "word", "games", "kotlin"))
+        val dictionary = Dictionary(setOf("a", "be", "bar", "word", "games", "kotlin"))
 
         val randomWord = dictionary.getRandomWord(3, 5)
 
@@ -30,11 +30,10 @@ class DictionaryTest {
     }
 
     @Test
-    fun getRandomWord_GivenLength4_WhenMultipleWordsAreAvailable() {
-        val dictionary = Dictionary(listOf("song", "bar", "word", "game", "generally"))
+    fun getRandomWord_GivenLength4_WhenMultipleWordsOfLength4AreAvailable() {
+        val dictionary = Dictionary(setOf("song", "bar", "word", "game", "generally"))
         val randomWord = dictionary.getRandomWord(4)
         assertTrue(randomWord in dictionary.words)
         assertThat(randomWord.length, equalTo(4))
     }
-
 }

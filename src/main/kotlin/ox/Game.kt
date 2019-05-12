@@ -1,7 +1,7 @@
 package ox
 
 class Game(val dictionary: Dictionary, val minLength: Int = 3, val maxLength: Int = 8) {
-    lateinit var wordToGuess: String
+    var wordToGuess: String = ""
 
     init {
         generateRandomWord()
@@ -11,8 +11,13 @@ class Game(val dictionary: Dictionary, val minLength: Int = 3, val maxLength: In
         wordToGuess = dictionary.getRandomWord(minLength, maxLength)
     }
 
-    val words: List<String>
+    val words: Collection<String>
         get() {
             return dictionary.words
+        }
+
+    val hint: String
+        get() {
+            return "*".repeat(wordToGuess.length)
         }
 }
