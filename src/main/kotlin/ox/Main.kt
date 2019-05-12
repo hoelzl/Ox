@@ -5,32 +5,43 @@ fun main(args: Array<String>) {
 
     var wasGameWon = false
     val matches = mutableListOf<Match>()
-    var input: String
+    var exitMainLoop: Boolean
 
     val game = Game(dictionary)
     game.onGameWon += { wasGameWon = true }
-    game.onNewMatch += { matches.add(it) }
+    game.onNewMatch += {
+        matches.add(it)
+        printPreviousMatches(matches)
+    }
 
     println("Guess the word!")
     println("The word to guess has ${game.wordToGuess.length} characters.\n")
 
     do {
-        println("\nPrevious matches:\n")
-        matches.forEach {
-            println(it.proposedWord())
-            println(it.matchDescription())
-            println()
-        }
-        println("Please enter your guess: ")
+        exitMainLoop = readAndProcessInput(game)
 
-        input = readLine() ?: ""
-        game.proposeSolution(input)
+    } while (!wasGameWon && !exitMainLoop)
 
-    } while (!wasGameWon && !input.isBlank())
-
+    println()
     if (wasGameWon) {
         println("You won!")
     } else {
         println("Better luck next time.")
     }
+}
+
+private fun printPreviousMatches(matches: MutableList<Match>) {
+    println("\nMatches:\n")
+    matches.forEach {
+        println(it.proposedWord())
+        println(it.matchDescription())
+        // println()
+    }
+}
+
+private fun readAndProcessInput(game: Game): Boolean {
+    println("\nPlease enter your guess: ")
+    val input = readLine() ?: ""
+    game.proposeSolution(input)
+    return input.isBlank()
 }
