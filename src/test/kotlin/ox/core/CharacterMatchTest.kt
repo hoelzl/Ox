@@ -1,7 +1,5 @@
-package ox
+package ox.core
 
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -35,20 +33,5 @@ class CharacterMatchTest {
     @Test
     fun isPartialMatch_WhenFailedMatch() {
         assertFalse(FailedCharacterMatch('a').isPartialMatch())
-    }
-
-    @Test
-    fun displayChar_WhenPerfectMatch() {
-        assertThat(PerfectCharacterMatch('a').descriptiveChar, equalTo('+'))
-    }
-
-    @Test
-    fun displayChar_WhenPartialMatch() {
-        assertThat(PartialCharacterMatch('a').descriptiveChar, equalTo('-'))
-    }
-
-    @Test
-    fun displayChar_WhenFailedMatch() {
-        assertThat(FailedCharacterMatch('a').descriptiveChar, equalTo('.'))
     }
 }

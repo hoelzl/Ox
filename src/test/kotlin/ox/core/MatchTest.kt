@@ -1,4 +1,4 @@
-package ox
+package ox.core
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
@@ -93,7 +93,7 @@ class MatchTest {
         val match = Match("solution", "backward")
 
         assertThat(match.proposedWord(), equalTo("backward"))
-        assertThat(match.matchDescription(), equalTo("........"))
+        assertThat(match.describeMatch(::describeCharacterMatch), equalTo("........"))
     }
 
     @Test
@@ -101,7 +101,14 @@ class MatchTest {
         val match = Match("solution", "crossbow")
 
         assertThat(match.proposedWord(), equalTo("crossbow"))
-        assertThat(match.matchDescription(), equalTo("..---.+."))
+        assertThat(match.describeMatch(::describeCharacterMatch), equalTo("..---.+."))
     }
 
+    @Test
+    fun matches_GivenWordsThatMatchPartially() {
+        val match = Match("solution", "crossbow")
+
+        assertThat(match.characterMatches.map(::describeCharacterMatch).joinToString(separator = ""),
+                equalTo("..---.+."))
+    }
 }

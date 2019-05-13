@@ -1,11 +1,18 @@
 package ox
 
+import ox.core.Match
+import ox.core.describeCharacterMatch
+import ox.data.ListBasedDictionary
+import ox.game.Game
+
 fun main(args: Array<String>) {
-    val dictionary = Dictionary(setOf("song", "bar", "word", "game", "generally"))
+    val dictionary = ListBasedDictionary(setOf("song", "bar", "word", "game", "generally"))
 
     var wasGameWon = false
     val matches = mutableListOf<Match>()
     var exitMainLoop: Boolean
+
+    val mainLoop = { game: Game -> readAndProcessInput(game) }
 
     val game = Game(dictionary)
     game.onGameWon += { wasGameWon = true }
@@ -18,8 +25,7 @@ fun main(args: Array<String>) {
     println("The word to guess has ${game.wordToGuess.length} characters.\n")
 
     do {
-        exitMainLoop = readAndProcessInput(game)
-
+        exitMainLoop = mainLoop(game)
     } while (!wasGameWon && !exitMainLoop)
 
     println()
@@ -34,8 +40,7 @@ private fun printPreviousMatches(matches: MutableList<Match>) {
     println("\nMatches:\n")
     matches.forEach {
         println(it.proposedWord())
-        println(it.matchDescription())
-        // println()
+        println(it.describeMatch(::describeCharacterMatch))
     }
 }
 
