@@ -1,20 +1,13 @@
 package ox.strategy
 
 import ox.game.Game
-import ox.game.Player
 
-class RandomPlayer : Player {
-    var wasGameStarted = false
-    var wasGameWon = false
+class RandomPlayer : AbstractPlayer() {
     var numMatches = 0
-    var game: Game? = null
 
     override fun join(theGame: Game) {
-        game = theGame
-        theGame.onNewGame += { wasGameStarted = true }
-        theGame.onGameWon += { wasGameWon = true }
+        super.join(theGame)
         theGame.onNewMatch += { numMatches++ }
-        theGame.player = this
     }
 
     override fun proposeSolution() {
