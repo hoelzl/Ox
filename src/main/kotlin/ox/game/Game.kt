@@ -23,9 +23,11 @@ class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
     private var _guesses = 0
     val guesses: Int get() = _guesses
 
-    private var gameState = GameState.NotStarted
-    val wasGameWon: Boolean get() = gameState == GameState.Won
-    val wasGameLost: Boolean get() = gameState == GameState.Lost
+    private var _gameState = GameState.NotStarted
+
+    val gameState: GameState get() = _gameState
+    val wasGameWon: Boolean get() = _gameState == GameState.Won
+    val wasGameLost: Boolean get() = _gameState == GameState.Lost
 
     val isGameDecided: Boolean get() = wasGameWon || wasGameLost
 
@@ -48,7 +50,7 @@ class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
 
     fun startNewGame() {
         _guesses = 0
-        gameState = GameState.InProgress
+        _gameState = GameState.InProgress
         generateRandomWord()
         onNewGame.forEach { it(this) }
     }
@@ -62,10 +64,10 @@ class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
 
     private fun updateGameState(match: Match) {
         if (match.isPerfectMatch()) {
-            gameState = GameState.Won
+            _gameState = GameState.Won
             onGameWon.forEach { it(match) }
         } else if (_guesses >= maxGuesses) {
-            gameState = GameState.Lost
+            _gameState = GameState.Lost
             onGameLost.forEach { it() }
         }
     }

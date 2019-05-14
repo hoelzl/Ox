@@ -10,7 +10,7 @@ class ManualPlayerTest : PlayerTest() {
     fun join() {
         val player: Player = ManualPlayer()
         testJoin(player)
-        MatcherAssert.assertThat(game.onGameWon.size, Matchers.equalTo(1))
+        MatcherAssert.assertThat(game.onGameWon.size, Matchers.equalTo(0))
         MatcherAssert.assertThat(game.onNewMatch.size, Matchers.equalTo(0))
     }
 }
