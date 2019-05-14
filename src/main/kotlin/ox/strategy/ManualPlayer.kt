@@ -28,7 +28,6 @@ class ManualPlayer : Player {
         game?.proposeSolution(input)
     }
 
-
     private fun printMatches(matches: List<Match>) {
         println("\nMatches:\n")
         matches.forEach {
@@ -36,5 +35,4 @@ class ManualPlayer : Player {
             println(it.describeMatch(::describeCharacterMatch))
         }
     }
-
 }
