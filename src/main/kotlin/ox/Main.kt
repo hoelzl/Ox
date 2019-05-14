@@ -20,7 +20,6 @@ fun main(args: Array<String>) {
     reporter.join(game)
 
     game.startNewGame()
-
     do {
         game.step()
     } while (!game.isGameDecided)

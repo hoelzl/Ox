@@ -1,16 +1,6 @@
 package ox.strategy
 
-import ox.game.Game
-
 class RandomPlayer : AbstractPlayer() {
-    var numMatches = 0
-
-    override fun join(theGame: Game) {
-        super.join(theGame)
-        theGame.onNewGame += { numMatches = 0 }
-        theGame.onNewMatch += { numMatches++ }
-    }
-
     override fun proposeSolution() {
         val theGame = game ?: return
         val proposedSolution = generateRandomWordOfLength(theGame.wordToGuess.length)
