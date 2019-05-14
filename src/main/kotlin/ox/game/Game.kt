@@ -2,8 +2,15 @@ package ox.game
 
 import ox.core.Match
 
+enum class GameState {
+    NotStarted,
+    InProgress,
+    Won,
+    Lost
+}
+
 class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
-           val maxLength: Int = 8, val maxGuesses: Int = 100) {
+           val maxLength: Int = 8, val maxGuesses: Int = 10) {
 
     private var _player: Player? = null
     var player
@@ -15,10 +22,10 @@ class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
 
     private var _guesses = 0
     val guesses: Int get() = _guesses
-    private var _wasGameWon = false
-    val wasGameWon: Boolean get() = _wasGameWon
-    private var _wasGameLost = false
-    val wasGameLost: Boolean get() = _wasGameLost
+
+    private var gameState = GameState.NotStarted
+    val wasGameWon: Boolean get() = gameState == GameState.Won
+    val wasGameLost: Boolean get() = gameState == GameState.Lost
 
     val isGameDecided: Boolean get() = wasGameWon || wasGameLost
 
@@ -28,7 +35,7 @@ class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
     val onNewGame: MutableCollection<(game: Game) -> Unit> = mutableListOf()
     val onNewMatch: MutableCollection<(match: Match) -> Unit> = mutableListOf()
     val onGameWon: MutableCollection<(match: Match) -> Unit> = mutableListOf()
-    val onGameLost: MutableCollection<(match: Match) -> Unit> = mutableListOf()
+    val onGameLost: MutableCollection<() -> Unit> = mutableListOf()
 
     init {
         startNewGame()
@@ -41,25 +48,25 @@ class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
 
     fun startNewGame() {
         _guesses = 0
-        _wasGameWon = false
-        _wasGameLost = false
+        gameState = GameState.InProgress
         generateRandomWord()
         onNewGame.forEach { it(this) }
     }
 
     fun proposeSolution(proposedSolution: String) {
         _guesses++
-        if (_guesses > maxGuesses) {
-            _wasGameLost = true
-            onGameLost.forEach {}
-            return
-        }
-
         val match = computeMatchFor(proposedSolution)
         onNewMatch.forEach { it(match) }
+        updateGameState(match)
+    }
+
+    private fun updateGameState(match: Match) {
         if (match.isPerfectMatch()) {
-            _wasGameWon = true
+            gameState = GameState.Won
             onGameWon.forEach { it(match) }
+        } else if (_guesses >= maxGuesses) {
+            gameState = GameState.Lost
+            onGameLost.forEach { it() }
         }
     }
 
