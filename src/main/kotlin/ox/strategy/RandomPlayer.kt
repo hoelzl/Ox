@@ -7,6 +7,7 @@ class RandomPlayer : AbstractPlayer() {
 
     override fun join(theGame: Game) {
         super.join(theGame)
+        theGame.onNewGame += { numMatches = 0 }
         theGame.onNewMatch += { numMatches++ }
     }
 

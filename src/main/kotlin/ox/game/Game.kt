@@ -55,6 +55,10 @@ class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
         onNewGame.forEach { it(this) }
     }
 
+    fun step() {
+        player.proposeSolution()
+    }
+
     fun proposeSolution(proposedSolution: String) {
         _guesses++
         val match = computeMatchFor(proposedSolution)

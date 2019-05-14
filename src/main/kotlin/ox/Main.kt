@@ -22,6 +22,6 @@ fun main(args: Array<String>) {
     game.startNewGame()
 
     do {
-        player.proposeSolution()
+        game.step()
     } while (!game.isGameDecided)
 }
