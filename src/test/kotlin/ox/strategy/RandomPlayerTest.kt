@@ -26,7 +26,7 @@ class RandomPlayerTest : PlayerTest() {
         val matches = mutableListOf<Match>()
         game.onNewMatch += { matches.add(it) }
 
-        player.proposeSolution()
+        player.proposeSolutionToGame()
 
         assertThat(matches.size, equalTo(1))
         assertThat(matches[0].proposedWord().length, equalTo(game.wordToGuess.length))

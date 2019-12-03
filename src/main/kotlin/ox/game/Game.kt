@@ -56,7 +56,7 @@ class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
     }
 
     fun step() {
-        player.proposeSolution()
+        player.proposeSolutionToGame()
     }
 
     fun proposeSolution(proposedSolution: String) {

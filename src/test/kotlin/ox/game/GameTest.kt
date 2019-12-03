@@ -14,7 +14,7 @@ class PlayerStub : Player {
     override fun join(theGame: Game) {
     }
 
-    override fun proposeSolution() {
+    override fun proposeSolutionToGame() {
     }
 }
 

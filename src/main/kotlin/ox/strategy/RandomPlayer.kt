@@ -1,7 +1,7 @@
 package ox.strategy
 
 class RandomPlayer : AbstractPlayer() {
-    override fun proposeSolution() {
+    override fun proposeSolutionToGame() {
         val theGame = game ?: return
         val proposedSolution = generateRandomWordOfLength(theGame.wordToGuess.length)
         theGame.proposeSolution(proposedSolution)
