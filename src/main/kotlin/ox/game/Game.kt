@@ -13,7 +13,7 @@ class Game(private val dictionary: Dictionary, private val minLength: Int = 3,
            val maxLength: Int = 8, val maxGuesses: Int = 10) {
 
     private var _player: Player? = null
-    var player
+    var player: Player
         get() = if (_player != null) _player!! else throw Exception()
         set(newPlayer) {
             if (_player != null) throw Exception()

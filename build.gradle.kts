@@ -51,6 +51,11 @@ tasks {
         }
     }
 }
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = myMainClassName
+    }
+}
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
@@ -76,11 +81,11 @@ tasks.withType<DokkaTask> {
 tasks.withType<JavaExec> {
     standardInput = System.`in`
 }
-
-jlink {
-    launcher {
-        name = myLauncherName
-    }
-    addExtraDependencies("javafx")
-    options.addAll("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages")
-}
+//
+//jlink {
+//    launcher {
+//        name = myLauncherName
+//    }
+//    addExtraDependencies("javafx")
+//    options.addAll("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages")
+//}

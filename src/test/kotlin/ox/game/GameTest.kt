@@ -27,7 +27,7 @@ class GameTest : GameFixture() {
     }
 
     @Test
-    fun setPlayer() {
+    fun setPlayer_SetsPlayer_WhenCalledWithValidPlayer() {
         val player: Player = PlayerStub()
         val game = Game(DictionaryStub())
 
